@@ -195,7 +195,7 @@ function emitEvent(event, body) {
       try {
         body.call(this, res);
       } finally {
-        InjectedScriptHost = null;
+        InjectedScriptHost.execState = null;
       }
     } else {
       res.body = body || {};
