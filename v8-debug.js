@@ -12,7 +12,7 @@ runScript(
   'ToggleMirrorCache = (function(backup) {' +
     'var toggle = function() {};' +
     'toggle.backup = backup;' +
-    'return backup' +
+    'return toggle' +
   '})(ToggleMirrorCache)'
 );
 
