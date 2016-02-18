@@ -87,21 +87,15 @@ function overrideProcessRequest(json) {
       InjectedScriptHost.execState = this.exec_state_;
 
       if (async) {
-        try {
-          handle.func.call(this, req, res, function(error) {
-            sendCommand(req.command, { asyncResponse: error || res });
-          });
-        } finally {
-          InjectedScriptHost.execState = null;
-        }
+        handle.func.call(this, req, res, function(error) {
+          sendCommand(req.command, { asyncResponse: error || res });
+        });
+        InjectedScriptHost.execState = null;
         return '{"seq":0,"type":"res","success":true}';
       }
 
-      try {
-        handle.func.call(this, req, res);
-      } finally {
-        InjectedScriptHost.execState = null;
-      }
+      handle.func.call(this, req, res);
+      InjectedScriptHost.execState = null;
     } catch (e) {
       // If there is no res object created one (without command).
       if (!res) res = this.createResponse();
@@ -145,6 +139,7 @@ function enable() {
 
 function disable() {
   if (!exports.enabled) return;
+  commands = {};
   binding.unshareSecurityToken();
   proto.processDebugJSONRequest = origProcess;
   exports.enabled = false;
